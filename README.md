@@ -1,6 +1,7 @@
 # Discord Channel Deletion 🤖
 
 Ce script permet de supprimer tous les salons d'un serveur Discord spécifié par son ID.
+Suppression des salons instantané !
 
 ## Prérequis ⚙️
 
