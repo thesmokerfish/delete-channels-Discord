@@ -3,7 +3,12 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 const readline = require('readline');
 
 client.on('ready', () => {
-  console.log(`Connecté en tant que ${client.user.tag}`);
+  console.log("----------------------------------------");
+  console.log("         Connecté !         ");
+  console.log("https://discord.com/oauth2/authorize?client_id=" + client.user.id + "&permissions=8&scope=bot")
+  console.log("----------------------------------------");
+  console.log("Pseudo  : " + client.user.username)
+  console.log("ID : " + client.user.id)
   getServerId();
 });
 
@@ -49,22 +54,17 @@ async function confirmAction(prompt) {
 
 async function deleteAllChannels(guild) {
   const channels = Array.from(guild.channels.cache.values());
-  let channelCount = 0;
+  const deletableChannels = channels.filter(channel => channel.deletable);
+  const channelCount = deletableChannels.length;
 
-  for (const channel of channels) {
-    if (channel.deletable) {
-      try {
-        await channel.delete();
-        channelCount++;
-      } catch (error) {
-        console.error(`Impossible de supprimer le salon ${channel.name} : `, error);
-      }
-    }
+  try {
+    await Promise.all(deletableChannels.map(channel => channel.delete()));
+    console.log(`Supprimé ${channelCount} salons sur le serveur ${guild.name}`);
+  } catch (error) {
+    console.error('Une erreur s\'est produite lors de la suppression des salons :', error);
   }
 
-  console.log(`Supprimé ${channelCount} salons sur le serveur ${guild.name}`);
   process.exit(0);
 }
 
-
-client.login('');
+client.login('TOKEN');
